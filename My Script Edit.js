@@ -180,6 +180,11 @@ bot.on("text", (ctx) => {
   const messageText = ctx.message.text.trim();
   const userId = ctx.from.id;
 
+  // Abaikan pesan yang diawali dengan "/"
+  if (messageText.startsWith("/")) {
+    return; // Abaikan perintah seperti /start atau /admin
+  }
+
   // Pastikan pengguna ada di database sebelum melanjutkan
   ensureUser(userId, () => {
     db.get(
