@@ -347,7 +347,7 @@ async function sendMainMenu(ctx) {
   }
 
   const messageText = `*Selamat datang di ${NAMA_STORE},
-* 🚀
+* 
 ⏳ *Uptime bot:* ${days} Hari
 🌐 *Server tersedia:* ${jumlahServer}
 👥 *Jumlah pengguna:* ${jumlahPengguna}
@@ -2077,7 +2077,7 @@ bot.action("cek_saldo", async (ctx) => {
 
     if (row) {
       await ctx.reply(
-        `💳 *Saldo Anda saat ini adalah:* Rp${row.saldo}\n🆔 *ID Anda:* ${userId}`,
+        `💳 *Saldo Anda saat ini adalah:* Rp${row.saldo}\n🆔 *ID Anda:* ${userId}\n\nSilahkan Hubungi :\nTelegram : @Sanmaxx\nWA : 085155208019\nUntuk Membeli Voucher Saldo Panel`,
         { parse_mode: "Markdown" }
       );
     } else {
