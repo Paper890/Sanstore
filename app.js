@@ -211,6 +211,33 @@ bot.command("create_voucher", (ctx) => {
   }
 });
 
+// Fungsi admin untuk melihat daftar kode voucher yang dibuat otomatis
+bot.command("list_auto_vouchers", (ctx) => {
+  const isAdmin = ctx.from.id === 576495165; // Ganti dengan Telegram ID admin Anda
+
+  if (!isAdmin) {
+    return ctx.reply("Anda tidak memiliki izin untuk menggunakan perintah ini.");
+  }
+
+  db.all("SELECT code, value FROM vouchers WHERE created_by = ? AND code LIKE 'AUTO%'", [ctx.from.id], (err, rows) => {
+    if (err) {
+      console.error("Kesalahan mengambil daftar voucher otomatis:", err.message);
+      return ctx.reply("Terjadi kesalahan saat mengambil daftar voucher.");
+    }
+
+    if (rows.length === 0) {
+      return ctx.reply("Tidak ada voucher otomatis yang ditemukan.");
+    }
+
+    let voucherList = "Daftar Voucher Otomatis:\n";
+    rows.forEach((row, index) => {
+      voucherList += `${index + 1}. Kode: ${row.code}, Saldo: ${row.value}\n`;
+    });
+
+    ctx.reply(voucherList);
+  });
+});
+
 // Fungsi untuk menukarkan voucher
 bot.command("redeem", (ctx) => {
   const args = ctx.message.text.split(" ");
