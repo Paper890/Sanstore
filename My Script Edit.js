@@ -50,7 +50,7 @@ const bot = new Telegraf("7360190308:AAH79nXyUiU4TRscBtYRLg14WVNfi1q1T1M");
 // Fungsi admin untuk membuat kode voucher
 bot.command("create_voucher", (ctx) => {
   const args = ctx.message.text.split(" ");
-  const isAdmin = ctx.from.id === 123456789; // Ganti dengan Telegram ID admin Anda
+  const isAdmin = ctx.from.id === 576495165; // Ganti dengan Telegram ID admin Anda
 
   if (!isAdmin) {
     return ctx.reply(
