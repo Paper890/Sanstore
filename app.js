@@ -160,7 +160,6 @@ bot.command("create_voucher", (ctx) => {
     const code = input;
     db.run(
       `INSERT INTO vouchers (code, value, created_by) VALUES (?, ?, ?)`,
-
       [code, value, ctx.from.id],
       (err) => {
         if (err) {
@@ -183,7 +182,8 @@ bot.command("create_voucher", (ctx) => {
 
     const vouchers = [];
     for (let i = 0; i < quantity; i++) {
-      vouchers.push([generateVoucherCode(), value, ctx.from.id]);
+      const code = generateVoucherCode(); // Fungsi untuk menghasilkan kode voucher
+      vouchers.push([code, value, ctx.from.id]);
     }
 
     const placeholders = vouchers.map(() => "(?, ?, ?)").join(", ");
@@ -200,42 +200,18 @@ bot.command("create_voucher", (ctx) => {
           );
           ctx.reply("Terjadi kesalahan saat membuat voucher otomatis.");
         } else {
-          ctx.reply(
-            `${quantity} kode voucher berhasil dibuat masing-masing dengan saldo ${value}.`
-          );
+          // Menampilkan kode voucher yang baru saja dibuat
+          let voucherList = `Berikut adalah ${quantity} kode voucher otomatis yang berhasil dibuat:\n`;
+          vouchers.forEach((voucher, index) => {
+            voucherList += `${index + 1}. Kode: ${voucher[0]}, Saldo: ${voucher[1]}\n`;
+          });
+          ctx.reply(voucherList);
         }
       }
     );
   } else {
     ctx.reply("Tipe voucher tidak valid. Gunakan 'manual' atau 'auto'.");
   }
-});
-
-// Fungsi admin untuk melihat daftar kode voucher yang dibuat otomatis
-bot.command("list_auto_vouchers", (ctx) => {
-  const isAdmin = ctx.from.id === 576495165; // Ganti dengan Telegram ID admin Anda
-
-  if (!isAdmin) {
-    return ctx.reply("Anda tidak memiliki izin untuk menggunakan perintah ini.");
-  }
-
-  db.all("SELECT code, value FROM vouchers WHERE created_by = ? AND code LIKE 'AUTO%'", [ctx.from.id], (err, rows) => {
-    if (err) {
-      console.error("Kesalahan mengambil daftar voucher otomatis:", err.message);
-      return ctx.reply("Terjadi kesalahan saat mengambil daftar voucher.");
-    }
-
-    if (rows.length === 0) {
-      return ctx.reply("Tidak ada voucher otomatis yang ditemukan.");
-    }
-
-    let voucherList = "Daftar Voucher Otomatis:\n";
-    rows.forEach((row, index) => {
-      voucherList += `${index + 1}. Kode: ${row.code}, Saldo: ${row.value}\n`;
-    });
-
-    ctx.reply(voucherList);
-  });
 });
 
 // Fungsi untuk menukarkan voucher
