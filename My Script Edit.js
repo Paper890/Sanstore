@@ -45,7 +45,7 @@ function ensureUser(userId, callback) {
 }
 
 // Inisialisasi Bot
-const bot = new Telegraf("YOUR_BOT_TOKEN");
+const bot = new Telegraf("7360190308:AAH79nXyUiU4TRscBtYRLg14WVNfi1q1T1M");
 
 // Fungsi admin untuk membuat kode voucher
 bot.command("create_voucher", (ctx) => {
