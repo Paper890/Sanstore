@@ -203,9 +203,9 @@ bot.command("create_voucher", (ctx) => {
           // Menampilkan kode voucher yang baru saja dibuat
           let voucherList = `Berikut adalah ${quantity} kode voucher otomatis yang berhasil dibuat:\n`;
           vouchers.forEach((voucher, index) => {
-            voucherList += `${index + 1}. Kode: ${voucher[0]}, Saldo: ${voucher[1]}\n`;
+            voucherList += `${index + 1}. \`Kode: ${voucher[0]}, Saldo: ${voucher[1]}\`\n`;
           });
-          ctx.reply(voucherList);
+          ctx.reply(voucherList, { parse_mode: 'MarkdownV2' });
         }
       }
     );
